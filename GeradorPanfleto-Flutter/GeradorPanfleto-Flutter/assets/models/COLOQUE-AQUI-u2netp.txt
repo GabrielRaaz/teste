@@ -1,0 +1,1 @@
+O modelo u2netp.onnx (~5 MB) deve ficar nesta pasta. O workflow do GitHub baixa sozinho; no build local, baixe de https://github.com/danielgatis/rembg/releases/tag/v0.0.0

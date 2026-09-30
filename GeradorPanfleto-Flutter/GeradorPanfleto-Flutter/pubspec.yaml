@@ -1,0 +1,20 @@
+name: gerador_panfleto
+description: Gerador de Panfletos (Windows e Android)
+publish_to: none
+version: 2.0.0+1
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  path_provider: ^2.1.4
+  file_picker: ^8.1.2
+  pdf: ^3.11.1
+  printing: ^5.13.1
+  image: ^4.2.0
+  onnxruntime: ^1.4.1
+  google_mlkit_text_recognition: ^0.13.1
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/models/
