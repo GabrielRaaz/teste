@@ -1,0 +1,44 @@
+name: Gerar APK e EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+env:
+  MODELO: https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx
+  PROJ: GeradorPanfleto-Flutter/GeradorPanfleto-Flutter
+defaults:
+  run:
+    working-directory: GeradorPanfleto-Flutter/GeradorPanfleto-Flutter
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: flutter create --platforms=android .
+      - run: sed -i 's/flutter.minSdkVersion/24/' android/app/build.gradle*
+      - run: curl -L -o assets/models/u2netp.onnx "$MODELO"
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GeradorPanfleto-Android-apk
+          path: GeradorPanfleto-Flutter/GeradorPanfleto-Flutter/build/app/outputs/flutter-apk/app-release.apk
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: flutter create --platforms=windows .
+      - run: curl -L -o assets/models/u2netp.onnx "$MODELO"
+        shell: bash
+      - run: flutter pub get
+      - run: flutter build windows --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GeradorPanfleto-Windows
+          path: GeradorPanfleto-Flutter/GeradorPanfleto-Flutter/build/windows/x64/runner/Release
